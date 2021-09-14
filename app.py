@@ -1,8 +1,11 @@
 from flask import Flask, redirect, render_template, request, flash
 from models import add_to_db, getFullUrl, getFullUrlByShorten
+import dotenv
+import os
 
+dotenv.load_dotenv()
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+app.secret_key = os.environ["SECRET_KEY"]
 
 
 @app.route("/", methods=["GET"])
