@@ -10,6 +10,10 @@ sqlite_file_url = "sqlite:///app.db"
 engine = create_engine(sqlite_file_url, echo=False)
 
 
+class ShoretenUrl:
+    url: str
+
+
 class Url(SQLModel, table=True):
     """
     This is the url table that stores the url and the shorten url
@@ -27,7 +31,7 @@ def create_table():
     SQLModel.metadata.create_all(engine)
 
 
-def create_shorten_url():
+def create_shorten_url() -> ShoretenUrl:
     """
     returns a randomly generated string of length 4
     """
