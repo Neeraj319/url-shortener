@@ -11,6 +11,11 @@ engine = create_engine(sqlite_file_url, echo=False)
 
 
 class Url(SQLModel, table=True):
+    """
+    This is the url table that stores the url and the shorten url
+
+    """
+
     id: Optional[int] = Field(default=None, primary_key=True)
     url: str = Field(max_length=500)
     shorten_url: str = Field(
@@ -19,6 +24,7 @@ class Url(SQLModel, table=True):
 
 
 def create_table():
+    """ """
     SQLModel.metadata.create_all(engine)
 
 
