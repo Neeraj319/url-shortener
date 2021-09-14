@@ -24,11 +24,13 @@ class Url(SQLModel, table=True):
 
 
 def create_table():
-    """ """
     SQLModel.metadata.create_all(engine)
 
 
 def create_shorten_url():
+    """
+    returns a randomly generated string of length 4
+    """
     lower_cases = string.ascii_lowercase
     upper_cases = string.ascii_uppercase
     shorten_url = "".join(
@@ -38,13 +40,21 @@ def create_shorten_url():
     return shorten_url
 
 
-def getFullUrl(url: str):
+def getFullUrl(url: str) -> Url:
+    """
+    this returns a url object
+
+    """
     with Session(engine) as session:
         url = session.exec(select(Url).where(Url.url == url))
         return url.first()
 
 
 def add_to_db(url: str):
+    """
+    add url to the database
+
+    """
     if url_ := getFullUrl(url=url):
         return url_.shorten_url
     else:
@@ -56,12 +66,16 @@ def add_to_db(url: str):
             return make_shorten_url
 
 
-def get_all_url():
+def get_all_url() -> Url:
     with Session(engine) as session:
         return [obj for obj in session.exec(select(Url))]
 
 
-def getFullUrlByShorten(shoreten_link: str):
+def getFullUrlByShorten(shoreten_link: str) -> Url:
+    """
+    get a shorten url from the data base
+
+    """
     with Session(engine) as session:
         url = session.exec(select(Url).where(Url.shorten_url == shoreten_link))
         return url.first()
