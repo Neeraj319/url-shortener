@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, request, flash
-from models import add_to_db, getFullUrl
+from models import add_to_db, getFullUrl, getFullUrlByShorten
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -20,6 +20,12 @@ def create_shorten__url():
 
     flash(f"shorten url : {shorten_url}")
     return redirect("/")
+
+
+@app.route("/<shorten_url>", methods=["GET"])
+def redirect_to(shorten_url):
+    full_url = getFullUrlByShorten(shoreten_link=shorten_url)
+    return redirect(full_url.url)
 
 
 if __name__ == "__main__":
