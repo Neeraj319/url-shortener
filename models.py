@@ -13,7 +13,9 @@ engine = create_engine(sqlite_file_url, echo=False)
 class Url(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     url: str = Field(max_length=500)
-    shorten_url: str = Field(max_length=50)
+    shorten_url: str = Field(
+        max_length=50,
+    )
 
 
 def create_table():
@@ -24,19 +26,28 @@ def create_shorten_url():
     lower_cases = string.ascii_lowercase
     upper_cases = string.ascii_uppercase
     shorten_url = "".join(
-        lower_cases[random.randint(1, 26)] + upper_cases[random.randint(1, 26)]
+        lower_cases[random.randint(0, 25)] + upper_cases[random.randint(1, 26)]
         for _ in range(4)
     )
     return shorten_url
 
 
-def add_to_db(url: str):
-
-    url = Url(url=url, shorten_url=create_shorten_url())
-
+def getFullUrl(url: str):
     with Session(engine) as session:
-        session.add(url)
-        session.commit()
+        url = session.exec(select(Url).where(Url.url == url))
+        return url.first()
+
+
+def add_to_db(url: str):
+    if url_ := getFullUrl(url=url):
+        return url_.shorten_url
+    else:
+        with Session(engine) as session:
+            make_shorten_url = create_shorten_url()
+            url = Url(url=url, shorten_url=make_shorten_url)
+            session.add(url)
+            session.commit()
+            return make_shorten_url
 
 
 def get_all_url():
@@ -44,7 +55,7 @@ def get_all_url():
         return [obj for obj in session.exec(select(Url))]
 
 
-def get_url(shoreten_link: str):
+def getFullUrlByShorten(shoreten_link: str):
     with Session(engine) as session:
         url = session.exec(select(Url).where(Url.shorten_url == shoreten_link))
-        return url
+        return url.first()
