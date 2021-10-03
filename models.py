@@ -1,23 +1,18 @@
-from typing import Optional
-from sqlalchemy.future import engine
 import random
 import string
-from sqlmodel import Field, SQLModel, create_engine, Session, select
+from typing import Optional
 
+from sqlalchemy.future import engine
+from sqlmodel import Field, Session, SQLModel, create_engine, select
 
 sqlite_file_url = "sqlite:///app.db"
 
 engine = create_engine(sqlite_file_url, echo=False)
 
 
-class ShoretenUrl:
-    url: str
-
-
 class Url(SQLModel, table=True):
     """
     This is the url table that stores the url and the shorten url
-
     """
 
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -31,14 +26,14 @@ def create_table():
     SQLModel.metadata.create_all(engine)
 
 
-def create_shorten_url() -> ShoretenUrl:
+def create_shorten_url() -> str:
     """
     returns a randomly generated string of length 4
     """
     lower_cases = string.ascii_lowercase
     upper_cases = string.ascii_uppercase
     shorten_url = "".join(
-        lower_cases[random.randint(0, 25)] + upper_cases[random.randint(1, 26)]
+        lower_cases[random.randint(0, 25)] + upper_cases[random.randint(1, 25)]
         for _ in range(4)
     )
     return shorten_url

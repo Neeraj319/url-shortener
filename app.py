@@ -1,7 +1,9 @@
-from flask import Flask, redirect, render_template, request, flash
-from models import add_to_db, getFullUrl, getFullUrlByShorten
-import dotenv
 import os
+
+import dotenv
+from flask import Flask, flash, redirect, render_template, request
+
+from models import add_to_db, getFullUrl, getFullUrlByShorten
 
 dotenv.load_dotenv()
 app = Flask(__name__)
