@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, flash
+from flask import Flask, redirect, render_template, request, flash, url_for
 from models import add_to_db, getFullUrl, getFullUrlByShorten
 import dotenv
 import os
@@ -14,18 +14,18 @@ def index():
 
 
 @app.route("/create", methods=["POST"])
-def create_shorten__url():
+def create_shorten_url():
     url_from_form = request.form["url"]
     if url := getFullUrl(url=url_from_form):
-        shorten_url = url
+        shorten_url = url.shorten_url
     else:
         shorten_url = add_to_db(url=url_from_form)
 
     flash(f"shorten url : {shorten_url}")
-    return redirect("/")
+    return redirect(url_for("index"))
 
 
-@app.route("/<shorten_url>", methods=["GET"])
+@app.route("/url/<shorten_url>", methods=["GET"])
 def redirect_to(shorten_url):
     full_url = getFullUrlByShorten(shoreten_link=shorten_url)
     return redirect(full_url.url)
