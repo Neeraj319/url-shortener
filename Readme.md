@@ -1,6 +1,6 @@
 # Url Shortener made with flask
 
-\*\*\* Installation
+- Installation
 
 ```bash
 docker compose up --build
