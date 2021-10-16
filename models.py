@@ -5,7 +5,7 @@ import string
 from sqlmodel import Field, SQLModel, create_engine, Session, select
 
 
-sqlite_file_url = "sqlite:///app.db"
+sqlite_file_url = "sqlite:///data/app.db"
 
 engine = create_engine(sqlite_file_url, echo=False)
 

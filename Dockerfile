@@ -15,8 +15,9 @@ RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
 ENV PATH="/.venv/bin:$PATH"
 WORKDIR /app
-
+RUN mkdir data
+RUN cd data&&touch app.db
 COPY . /app/
 EXPOSE 5000
-
-CMD ["python" , "app.py"]
+ENTRYPOINT [ "python3" ]
+CMD [ "app.py"]
