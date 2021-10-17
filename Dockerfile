@@ -10,7 +10,7 @@ RUN apk update && apk add gcc
 
 COPY Pipfile .
 COPY Pipfile.lock .
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
+RUN pipenv install --deploy
 
 
 ENV PATH="/.venv/bin:$PATH"
