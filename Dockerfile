@@ -19,3 +19,4 @@ RUN mkdir data
 RUN cd data&&touch app.db&&cd ..
 COPY . /app/
 EXPOSE 5000
+RUN ["python" "manage.py" "migrate"]
