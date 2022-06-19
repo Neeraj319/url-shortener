@@ -5,4 +5,6 @@
 ```bash
 docker-compose up --build
 
-```
+``` 
+
+## NOTE make sure to comment out line no 3 and 5 after first build
