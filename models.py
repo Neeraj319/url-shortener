@@ -28,20 +28,10 @@ class Url(SQLModel, table=True):
 
 
 def create_table():
+    """
+    creates the table if it doesn't exist
+    """
     SQLModel.metadata.create_all(engine)
-
-
-def create_shorten_url() -> ShoretenUrl:
-    """
-    returns a randomly generated string of length 4
-    """
-    lower_cases = string.ascii_lowercase
-    upper_cases = string.ascii_uppercase
-    shorten_url = "".join(
-        lower_cases[random.randint(0, 25)] + upper_cases[random.randint(1, 26)]
-        for _ in range(4)
-    )
-    return shorten_url
 
 
 def getFullUrl(url: str) -> Url:
@@ -52,6 +42,27 @@ def getFullUrl(url: str) -> Url:
     with Session(engine) as session:
         url = session.exec(select(Url).where(Url.url == url))
         return url.first()
+
+
+def getFullUrlByShorten(shoreten_link: str) -> Url:
+    """
+    get a shorten url from the data base
+
+    """
+    with Session(engine) as session:
+        url = session.exec(select(Url).where(Url.shorten_url == shoreten_link))
+        return url.first()
+
+
+def create_shorten_url() -> ShoretenUrl:
+    """
+    returns a randomly generated string of length 4
+    """
+    chars = string.ascii_letters
+    slug = "".join(random.choice(chars) for _ in range(5))
+    if getFullUrlByShorten(shoreten_link=slug):
+        return create_shorten_url()
+    return slug
 
 
 def add_to_db(url: str):
@@ -71,15 +82,8 @@ def add_to_db(url: str):
 
 
 def get_all_url() -> Url:
+    """
+    returns all url objects from the db
+    """
     with Session(engine) as session:
         return [obj for obj in session.exec(select(Url))]
-
-
-def getFullUrlByShorten(shoreten_link: str) -> Url:
-    """
-    get a shorten url from the data base
-
-    """
-    with Session(engine) as session:
-        url = session.exec(select(Url).where(Url.shorten_url == shoreten_link))
-        return url.first()

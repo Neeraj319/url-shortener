@@ -15,6 +15,9 @@ def index():
 
 @app.route("/create", methods=["POST"])
 def create_shorten_url():
+    """
+    creates a shorten url
+    """
     url_from_form = request.form["url"]
     if url := getFullUrl(url=url_from_form):
         shorten_url = url.shorten_url
@@ -27,6 +30,9 @@ def create_shorten_url():
 
 @app.route("/url/<shorten_url>", methods=["GET"])
 def redirect_to(shorten_url):
+    """
+    redirects to the original url
+    """
     full_url = getFullUrlByShorten(shoreten_link=shorten_url)
     return redirect(full_url.url)
 
