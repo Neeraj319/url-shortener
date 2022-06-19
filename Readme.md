@@ -1,4 +1,4 @@
-# Url Shortener made with flask
+# Url Shortener
 
 - Installation
 
